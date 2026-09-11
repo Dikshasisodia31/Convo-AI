@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg: #10121A;
+  --panel: #191C26;
+  --border: #2A2E3D;
+  --text-primary: #EAEAF2;
+  --text-secondary: #8B8FA3;
+  --accent: #E3A548;
+  --accent-teal: #4FAE9C;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+}
+
+.app-wrap {
+  width: 100%;
+  max-width: 640px;
+  padding: 80px 24px;
+}
+
+.eyebrow {
+  font-size: 13px;
+  color: var(--accent-teal);
+  margin: 0 0 12px 0;
+  font-weight: 500;
+}
+
+.app-wrap h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 48px;
+  line-height: 1.1;
+  margin: 0 0 14px 0;
+  letter-spacing: -0.01em;
+}
+
+.app-wrap p.sub {
+  color: var(--text-secondary);
+  font-size: 17px;
+  line-height: 1.5;
+  margin: 0 0 36px 0;
+  max-width: 46ch;
+}
+
+.transcript-field {
+  border-left: 2px solid var(--accent);
+  padding-left: 20px;
+}
+
+textarea {
+  width: 100%;
+  min-height: 220px;
+  resize: vertical;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  padding: 16px 18px;
+}
+
+textarea::placeholder {
+  color: #565A6B;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: var(--accent-teal);
+}
+
+.actions {
+  margin-top: 20px;
+  padding-left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent);
+  color: #1A1305;
+  border: none;
+  border-radius: 4px;
+  padding: 12px 20px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+button:hover:not(:disabled) {
+  background: #f0b568;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--accent-teal);
+  outline-offset: 2px;
+}
+
+.status-msg {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin: 0;
+}
