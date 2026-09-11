@@ -1,0 +1,67 @@
+import Conversation from "../models/conversation.js";
+import {analyzeConversation} from "../services/geminiService.js"
+
+export const createConversation = async(req,res) => {
+    try{
+        const {content} = req.body;
+
+        if(!content || content.trim() === ""){
+            return res.status(400).json({
+                success : false,
+                message : "Conversation content is mandatory to fill",
+            });
+        }
+        const newConversation = await Conversation.create({
+            content,
+        });
+
+        res.status(201).json({
+            success : true,
+            message : "Conversation saved successfully",
+            data: newConversation,
+        })
+    }catch(err){
+        console.log("error",err);
+
+        res.status(500).json({
+            success : false,
+            message : "Something went wrong",
+            error : err.message,
+        });
+    }
+};
+
+export const analyzeConversationById = async(req,res) => {
+    try{
+        const conversation = await Conversation.findById(req.params.id);
+
+        if(!conversation){
+            return res.status(404).json({
+                success : false,
+                message : "Conversation is not found",
+            });
+        }
+
+        const analysis = await analyzeConversation(
+            conversation.content
+        );
+        
+        conversation.analysis = analysis;
+
+        await conversation.save();
+
+        res.status(200).json({
+            success : true,
+            message : "Analyze done carefully",
+            data : conversation,
+        });
+
+    }catch(err){
+        console.log("AI analysis error");
+        res.status(500).json({
+            success : false,
+            message : "Failed to analyze conversation",
+            error: err.message,
+        });
+    }
+};
