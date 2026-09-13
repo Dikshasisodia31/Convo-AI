@@ -65,3 +65,53 @@ export const analyzeConversationById = async(req,res) => {
         });
     }
 };
+
+export const analyzeAudioConversation = async (req, res) => {
+
+    try {
+
+        if (!req.file) {
+            return res.status(400).json({
+                success: false,
+                message: "Audio file is required"
+            });
+        }
+
+        console.log("Audio received:", req.file.originalname);
+
+        const analysis = await analyzeAudio(
+            req.file.path,
+            req.file.mimetype
+        );
+
+        // Save conversation in MongoDB
+        const newConversation = await Conversation.create({
+            content: `Audio meeting: ${req.file.originalname}`,
+            analysis
+        });
+
+        // Delete temporary audio file
+        fs.unlinkSync(req.file.path);
+
+        res.status(201).json({
+            success: true,
+            message: "Audio analyzed successfully",
+            data: newConversation
+        });
+
+    } catch (err) {
+
+        console.error("Audio analysis error:", err);
+
+        // Clean up file if something failed
+        if (req.file?.path && fs.existsSync(req.file.path)) {
+            fs.unlinkSync(req.file.path);
+        }
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to analyze audio",
+            error: err.message
+        });
+    }
+};

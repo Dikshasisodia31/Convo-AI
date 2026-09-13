@@ -1,7 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
 
-console.log("Key present:", !!process.env.GEMINI_API_KEY, process.env.GEMINI_API_KEY?.slice(0, 6));
-
 const ai = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY,
 });
