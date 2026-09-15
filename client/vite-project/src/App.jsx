@@ -113,7 +113,6 @@ function App() {
 
 
       <div className="audio-section">
-        {/* <h2>Analyze Meeting Audio</h2> */}
         <p>
           Upload your meeting recording.
         </p>

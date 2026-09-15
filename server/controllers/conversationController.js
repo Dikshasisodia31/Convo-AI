@@ -1,5 +1,5 @@
 import Conversation from "../models/conversation.js";
-import {analyzeConversation} from "../services/geminiService.js"
+import {analyzeConversation, analyzeAudio} from "../services/geminiService.js"
 
 export const createConversation = async(req,res) => {
     try{
@@ -9,7 +9,7 @@ export const createConversation = async(req,res) => {
             return res.status(400).json({
                 success : false,
                 message : "Conversation content is mandatory to fill",
-            });
+            })
         }
         const newConversation = await Conversation.create({
             content,
@@ -115,3 +115,4 @@ export const analyzeAudioConversation = async (req, res) => {
         });
     }
 };
+
