@@ -7,7 +7,10 @@ import conversationRoutes from "./routes/conversationRoutes.js";
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin : ["http://localhost:3000", "https://convo-ai-theta.vercel.app"],
+    credentials : true
+}));
 app.use(express.json());
 
 app.get("/", (req, res) => {
