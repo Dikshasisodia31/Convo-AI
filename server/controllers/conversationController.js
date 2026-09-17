@@ -1,14 +1,15 @@
 import Conversation from "../models/conversation.js";
-import {analyzeConversation, analyzeAudio} from "../services/geminiService.js"
+import { analyzeConversation, analyzeAudio } from "../services/geminiService.js";
+import fs from "fs";
 
-export const createConversation = async(req,res) => {
-    try{
-        const {content} = req.body;
+export const createConversation = async (req, res) => {
+    try {
+        const { content } = req.body;
 
-        if(!content || content.trim() === ""){
+        if (!content || content.trim() === "") {
             return res.status(400).json({
-                success : false,
-                message : "Conversation content is mandatory to fill",
+                success: false,
+                message: "Conversation content is mandatory to fill",
             })
         }
         const newConversation = await Conversation.create({
@@ -16,51 +17,51 @@ export const createConversation = async(req,res) => {
         });
 
         res.status(201).json({
-            success : true,
-            message : "Conversation saved successfully",
+            success: true,
+            message: "Conversation saved successfully",
             data: newConversation,
         })
-    }catch(err){
-        console.log("error",err);
+    } catch (err) {
+        console.log("error", err);
 
         res.status(500).json({
-            success : false,
-            message : "Something went wrong",
-            error : err.message,
+            success: false,
+            message: "Something went wrong",
+            error: err.message,
         });
     }
 };
 
-export const analyzeConversationById = async(req,res) => {
-    try{
+export const analyzeConversationById = async (req, res) => {
+    try {
         const conversation = await Conversation.findById(req.params.id);
 
-        if(!conversation){
+        if (!conversation) {
             return res.status(404).json({
-                success : false,
-                message : "Conversation is not found",
+                success: false,
+                message: "Conversation is not found",
             });
         }
 
         const analysis = await analyzeConversation(
             conversation.content
         );
-        
+
         conversation.analysis = analysis;
 
         await conversation.save();
 
         res.status(200).json({
-            success : true,
-            message : "Analyze done carefully",
-            data : conversation,
+            success: true,
+            message: "Analyze done carefully",
+            data: conversation,
         });
 
-    }catch(err){
+    } catch (err) {
         console.log("AI analysis error");
         res.status(500).json({
-            success : false,
-            message : "Failed to analyze conversation",
+            success: false,
+            message: "Failed to analyze conversation",
             error: err.message,
         });
     }
@@ -76,6 +77,12 @@ export const analyzeAudioConversation = async (req, res) => {
                 message: "Audio file is required"
             });
         }
+
+        console.log("Audio file path:", req.file.path);
+        console.log("Audio MIME type:", req.file.mimetype);
+        console.log("Audio original name:", req.file.originalname);
+
+        const filePath = req.file.path;
 
         console.log("Audio received:", req.file.originalname);
 
@@ -115,4 +122,3 @@ export const analyzeAudioConversation = async (req, res) => {
         });
     }
 };
-

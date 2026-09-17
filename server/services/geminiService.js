@@ -94,12 +94,35 @@ export const analyzeConversation = async (conversation) => {
 
 export const analyzeAudio = async (filePath, mimeType) => {
 
-    const uploadedFile = await ai.files.upload({
+    let uploadedFile = await ai.files.upload({
         file: filePath,
         config: {
             mimeType: mimeType,
         },
     });
+
+    console.log("File uploaded.CurrentState:", uploadedFile.state);
+
+    while (uploadedFile.state === "PROCESSING") {
+        console.log("Waiting for audio processing...");
+
+        await new Promise((resolve) =>
+            setTimeout(resolve, 3000)
+        );
+
+        uploadedFile = await ai.files.get({
+            name: uploadedFile.name,
+        });
+    }
+
+    // 3. Check if processing failed
+    if (uploadedFile.state !== "ACTIVE") {
+        throw new Error(
+            `File processing failed. Current state: ${uploadedFile.state}`
+        );
+    }
+
+    console.log("File is ACTIVE and ready for analysis.");
 
     const prompt = `
 You are an AI project management assistant analyzing a meeting recording.

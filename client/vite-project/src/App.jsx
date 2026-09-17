@@ -71,7 +71,7 @@ function App() {
       formData.append("audio", audioFile);
 
       const response = await axios.post(
-        "https://localhost:3000/api/conversations/audio/analyze",
+        "http://localhost:3000/api/conversations/audio/analyze",
         formData
       );
 
@@ -175,11 +175,11 @@ function App() {
                   {analysis.tasks.map((task, index) => (
                     <li
                       key={index}>
-                      <strong>{task.task}</strong>
+                      <strong>Task : {task.task}</strong>
                       <br></br>
-                      <strong>{task.assignedTo}</strong>
+                      <strong>Assigned to : {task.assignedTo}</strong>
                       <br></br>
-                      <strong>{task.deadline}</strong>
+                      <strong>Deadline : {task.deadline}</strong>
                     </li>
                   ))}
                 </ul>
