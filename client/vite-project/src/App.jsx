@@ -35,7 +35,7 @@ function App() {
       const conversationId = response.data.data._id;
 
       const analyzeResponse = await axios.post(
-        `${API_URL}/conversations/${conversationId}/analyze`
+        `${API_URL}/api/conversations/${conversationId}/analyze`
       );
 
       setAnalysis(
