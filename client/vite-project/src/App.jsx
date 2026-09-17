@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import axios from "axios";
 import './App.css'
+const API_URL = "https://convo-ai-u1oo.onrender.com";
 
 function App() {
 
@@ -24,16 +25,17 @@ function App() {
       setMessage("");
 
       const response = await axios.post(
-        "http://localhost:3000/api/conversations",
+        `${API_URL}/api/conversations`,
         {
           content: conversation,
         }
       );
+      
 
       const conversationId = response.data.data._id;
 
       const analyzeResponse = await axios.post(
-        `http://localhost:3000/api/conversations/${conversationId}/analyze`
+        `${API_URL}/conversations/${conversationId}/analyze`
       );
 
       setAnalysis(
@@ -71,7 +73,7 @@ function App() {
       formData.append("audio", audioFile);
 
       const response = await axios.post(
-        "http://localhost:3000/api/conversations/audio/analyze",
+        `${API_URL}/api/conversations/audio/analyze`,
         formData
       );
 
